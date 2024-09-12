@@ -14,10 +14,25 @@ public class CharacterService {
         this.restClient = builder.baseUrl("https://rickandmortyapi.com/api" ).build();
     }
 
+    //Get All Characters
     public List<Character> getAllCharacters() {
         RickAndMorthyApiResponseResult response = this.restClient.get().uri("/character" ).retrieve().body(RickAndMorthyApiResponseResult.class);
         assert response != null;
         return response.results();
     }
+
+    //BYID
+    public Character getCharacterById(int id) {
+        List<Character> characters = getAllCharacters();
+        return characters.stream().filter(character -> character.getId() == id).findFirst().orElse(null);
+    }
+
+    //Filter
+    public List<Character> filterByStatus(String status) {
+        RickAndMorthyApiResponseResult response = this.restClient.get().uri("/api/character?status="+ status ).retrieve().body(RickAndMorthyApiResponseResult.class);
+        assert response != null;
+        return response.results();
+    }
+
 
 }
