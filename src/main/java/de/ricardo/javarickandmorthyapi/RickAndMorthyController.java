@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/api/characters" )
+@RequestMapping("/api/" )
 public class RickAndMorthyController {
 
     RestClient.Builder builder = RestClient.builder();
@@ -23,11 +23,21 @@ public class RickAndMorthyController {
         return characterService.getCharacterById(id);
     }
 
-    @GetMapping
-    public List<Character> getCharacterByStatus(@RequestParam("status") Optional<String> status) {
-        if (status.isPresent()) {
-            return characterService.filterByStatus(status.get());
+    @GetMapping("/characters" )
+    public List<Character> getCharacterByStatus(@RequestParam(required = false) String status) {
+        if (status != null) {
+            return characterService.filterByStatus(status);
+        } else {
+            return characterService.getAllCharacters();
         }
-        return characterService.getAllCharacters();
+    }
+
+    @GetMapping("species-statistic" )
+    public int getCharacterBySpecies(@RequestParam(required = false) String species) {
+        if (species != null) {
+            return characterService.getAliveBySpecies(species);
+        } else {
+            return 0;
+        }
     }
 }

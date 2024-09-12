@@ -29,9 +29,24 @@ public class CharacterService {
 
     //Filter
     public List<Character> filterByStatus(String status) {
-        RickAndMorthyApiResponseResult response = this.restClient.get().uri("/api/character?status="+ status ).retrieve().body(RickAndMorthyApiResponseResult.class);
+        RickAndMorthyApiResponseResult response = this.restClient
+                .get()
+                .uri("/character?status={status}", status)
+                .retrieve()
+                .body(RickAndMorthyApiResponseResult.class);
         assert response != null;
         return response.results();
+    }
+
+    //Statistics
+    public int getAliveBySpecies(String species) {
+        RickAndMorthyApiResponseResult response = this.restClient
+                .get()
+                .uri("/character?species={species}&status=alive", species)
+                .retrieve()
+                .body(RickAndMorthyApiResponseResult.class);
+        assert response != null;
+        return response.info().count();
     }
 
 
