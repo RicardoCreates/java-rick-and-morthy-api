@@ -1,5 +1,6 @@
 package de.ricardo.javarickandmorthyapi;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.client.RestClient;
 
@@ -8,10 +9,10 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/" )
+@RequiredArgsConstructor
 public class RickAndMorthyController {
 
-    RestClient.Builder builder = RestClient.builder();
-    private final CharacterService characterService = new CharacterService(builder);
+    private final CharacterService characterService;
 
 //    @GetMapping
 //    public List<Character> getAllCharacters() {
