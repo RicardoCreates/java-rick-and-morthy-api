@@ -70,7 +70,32 @@ class RickAndMorthyControllerTest {
     }
 
     @Test
-    void getCharacterById() {
+    void getCharacterById() throws Exception {
+        mockRestServiceServer.expect(requestTo("https://rickandmortyapi.com/api/character/1"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("""
+                                {
+                                            "id": 1,
+                                            "name": "Rick Sanchez",
+                                            "status": "Alive",
+                                            "species": "Human"
+                                }
+                                """,
+                        MediaType.APPLICATION_JSON));
+
+
+        mockMvc.perform(get("/api/characters/1"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                
+                     {
+                         "id": 1,
+                         "name": "Rick Sanchez",
+                         "status": "Alive",
+                         "species": "Human"
+                     }
+                
+                """));
     }
 
     @Test

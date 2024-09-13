@@ -19,7 +19,7 @@ public class RickAndMorthyController {
 //        return characterService.getAllCharacters();
 //    }
 
-    @GetMapping("/{id}" )
+    @GetMapping("/characters/{id}" )
     public Character getCharacterById(@PathVariable int id) {
         return characterService.getCharacterById(id);
     }

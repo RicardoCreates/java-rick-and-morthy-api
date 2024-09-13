@@ -22,9 +22,13 @@ public class CharacterService {
     }
 
     //BYID
-    public Character getCharacterById(int id) {
-        List<Character> characters = getAllCharacters();
-        return characters.stream().filter(character -> character.getId() == id).findFirst().orElse(null);
+//    public Character getCharacterById(int id) {
+//        List<Character> characters = getAllCharacters();
+//        return characters.stream().filter(character -> character.getId() == id).findFirst().orElse(null);
+//    }
+
+    public Character getCharacterById (int id){
+        return this.restClient.get().uri("/character/"+ id).retrieve().body(Character.class); //Hier wird die GET Anfrage geschickt
     }
 
     //Filter
