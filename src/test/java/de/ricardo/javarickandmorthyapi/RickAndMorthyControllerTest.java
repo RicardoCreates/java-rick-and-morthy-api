@@ -99,10 +99,71 @@ class RickAndMorthyControllerTest {
     }
 
     @Test
-    void getCharacterByStatus() {
+    void getCharacterByStatus() throws Exception {
+        mockRestServiceServer.expect(requestTo("https://rickandmortyapi.com/api/character?status=alive"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("""
+                                {
+                                    "info": {
+                                        "count": 32,
+                                        "pages": 42
+                                    },
+                                    "results": [
+                                        {
+                                            "id": 1,
+                                            "name": "Rick Sanchez",
+                                            "status": "Alive",
+                                            "species": "Human"
+                                        }
+                                    ]
+                                }
+                                """,
+                        MediaType.APPLICATION_JSON));
+
+
+        mockMvc.perform(get("/api/characters?status=alive"))
+                .andExpect(status().isOk())
+                .andExpect(content().json("""
+                        [
+                             {
+                                 "id": 1,
+                                 "name": "Rick Sanchez",
+                                 "status": "Alive",
+                                 "species": "Human"
+                             }
+                        ]
+                        """));
     }
 
+
     @Test
-    void getCharacterBySpecies() {
+    void getCharacterBySpecies() throws Exception {
+        mockRestServiceServer.expect(requestTo("https://rickandmortyapi.com/api/character?species=human&status=alive"))
+                .andExpect(method(HttpMethod.GET))
+                .andRespond(withSuccess("""
+                                {
+                                    "info": {
+                                        "count": 32,
+                                        "pages": 42
+                                    },
+                                    "results": [
+                                        {
+                                            "id": 1,
+                                            "name": "Rick Sanchez",
+                                            "status": "Alive",
+                                            "species": "Human"
+                                        }
+                                    ]
+                                }
+                                """,
+                        MediaType.APPLICATION_JSON));
+
+
+        mockMvc.perform(get("/api/species-statistic?species=human"))
+                .andExpect(status().isOk())
+                .andExpect(content().string(
+                        "32"
+                        ));
     }
+
 }
